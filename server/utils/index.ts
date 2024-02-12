@@ -4,9 +4,9 @@ export function delay(time: number) {
   });
 }
 
-export function generateSkip(current?: string, pageSize?: string) {
-  const page = current ? parseInt(current) : 1;
-  const skip = pageSize ? parseInt(pageSize) : 10;
+export function generateSkip(current?: number, pageSize?: number) {
+  const page = current ? current : 1;
+  const skip = pageSize ? pageSize : 10;
   const take = (page - 1) * skip;
   return {
     page: isNaN(page) ? 1 : page,

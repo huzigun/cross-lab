@@ -16,12 +16,13 @@ export const getSmartStoreToken = async () => {
 
   if (
     !!smartstore.token &&
-    dayjs(smartstore.expiresAt).add(-10, 'minute').isAfter(new Date()) // 만료 10분 전
+    dayjs(smartstore.expiresAt).add(-10, 'minute').isAfter(dayjs(new Date())) // 만료 10분 전
   ) {
     return smartstore.token;
   }
 
   const timestamp = new Date().getTime();
+
   // 밑줄로 연결하여 password 생성
   const password = `${smartstore.clientId}_${timestamp}`;
   // bcrypt 해싱
@@ -42,6 +43,8 @@ export const getSmartStoreToken = async () => {
       timestamp,
     },
   });
+
+  console.log(data);
 
   if (data.access_token) {
     await client.smartStore.update({
@@ -95,4 +98,82 @@ export async function findManyOrder<T extends Order>(
   data: Prisma.OrderFindManyArgs,
 ) {
   return (await client.order.findMany(data)) as T[];
+}
+
+export async function countOrder(args: Prisma.OrderCountArgs) {
+  return await client.order.count(args);
+}
+
+/**
+ * 설치 주문 생성
+ */
+export async function installOrder(
+  data: Prisma.InstallCreateInput,
+  connect: {
+    engineerId: string;
+    orderId: string;
+    productId: string;
+  },
+) {
+  await client.$transaction(async (prismaInstance) => {
+    const installId = generateId(20);
+    // 설치 주문 생성
+    await prismaInstance.install.create({
+      data: {
+        ...data,
+        id: installId,
+      },
+    });
+
+    // 본사 재고 사용 시
+    if (!!data.useStock) {
+      // 본사 재고 감소
+      await prismaInstance.product.update({
+        where: { id: connect.productId },
+        data: {
+          stock: { decrement: 1 },
+          inventoryMovements: {
+            create: {
+              type: 'OUTBOUND',
+              quantity: 1,
+              description: `(${installId}) 설치 출고`,
+            },
+          },
+        },
+      });
+
+      // 엔지니어 재고 증가
+      await prismaInstance.stockItem.upsert({
+        where: {
+          productId_engineerId: {
+            productId: connect.productId,
+            engineerId: connect.engineerId,
+          },
+        },
+        create: {
+          id: generateId(20),
+          quantity: 1,
+          product: { connect: { id: connect.productId } },
+          engineer: { connect: { id: connect.engineerId } },
+          inventoryMovements: {
+            create: {
+              type: 'INBOUND',
+              quantity: 1,
+              description: `(${installId}) 설치 입고`,
+            },
+          },
+        },
+        update: {
+          quantity: { increment: 1 },
+          inventoryMovements: {
+            create: {
+              type: 'INBOUND',
+              quantity: 1,
+              description: `(${installId}) 설치 입고`,
+            },
+          },
+        },
+      });
+    }
+  });
 }

@@ -173,6 +173,8 @@ model StockItem {
   product    Product @relation(references: [id], fields: [productId], onDelete: Cascade)
   engineer   Engineer @relation(references: [id], fields: [engineerId], onDelete: Cascade)
   inventoryMovements InventoryMovement[] // 재고 이동 기록
+
+  @@unique([productId, engineerId])
 }
 
 model InventoryMovement {

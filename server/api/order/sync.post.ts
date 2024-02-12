@@ -25,13 +25,13 @@ export default defineEventHandler(async (event) => {
   let to = now.subtract(5, 'second'); // 5초 전
   let from = now.subtract(5, 'second').subtract(1, 'day'); // 1일 전
 
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 31; i++) {
     const result = await $fetch<any>(
       `https://api.commerce.naver.com/external/v1/pay-order/seller/product-orders/last-changed-statuses`,
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer 2f6krEZnqYr1vxLTKUv8xU`,
+          Authorization: `Bearer ${accessToken}`,
         },
         params: {
           lastChangedFrom: from.toISOString(),
@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer 2f6krEZnqYr1vxLTKUv8xU`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: {
           productOrderIds,
