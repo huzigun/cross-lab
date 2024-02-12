@@ -1,0 +1,205 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String    @id @default(uuid())
+  username String    @unique
+  password String
+  nickname String    // 유저의 닉네임
+  avatar   String?   // 유저의 아바타
+  role     UserRole  @default(ADMIN) // 유저의 역할
+
+  createdAt DateTime @default(now()) // 유저 생성 시간
+  updatedAt DateTime @updatedAt // 유저 업데이트 시간
+  deletedAt DateTime? // 유저 삭제 시간
+
+  sessions Session[] // 유저의 세션
+}
+
+enum UserRole {
+  SUPERADMIN // 최고 관리자
+  ADMIN // 관리자
+  USER // 일반 사용자
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String // 세션의 유저 아이디
+  expiresAt DateTime // 세션 만료 시간
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Engineer {
+  id       String    @id @default(uuid())
+  name String       // 네임
+  number String     // 번호
+  zipCode String    // 우편번호
+  address String    // 주소
+  addressDetail String? // 상세주소
+  
+  createdAt DateTime @default(now()) // 엔지니어 생성 시간
+  updatedAt DateTime @updatedAt // 엔지니어 업데이트 시간
+  deletedAt DateTime? // 엔지니어 삭제 시간
+
+  installs Install[] // 엔지니어의 설치
+  stockItems StockItem[] // 엔지니어의 재고
+}
+
+model Product {
+  id       String    @id @default(uuid())
+  name String       // 제품명
+  price Int       @default(0)   // 가격
+  stock Int       @default(0)  // 재고
+  description String? // 설명
+
+  smartstoreProductId String? // 스마트스토어 상품 아이디 (channelProductNo)
+  coopangProductId String? // 쿠팡 상품 아이디
+  elevenProductId String? // 11번가 상품 아이디
+
+  createdAt DateTime @default(now()) // 제품 생성 시간
+  updatedAt DateTime @updatedAt // 제품 업데이트 시간
+  deletedAt DateTime? // 제품 삭제 시간
+
+  orders Order[] // 제품의 설치
+  stockItems StockItem[] // 제품의 재고
+  inventoryMovements InventoryMovement[] // 재고 이동 기록
+}
+
+model Order {
+  id       String    @id @default(uuid())
+  productId String? // 상품 아이디 (제품이 삭제되어도 주문은 남아있어야 함)
+
+  buyShop Shop @default(SMARTSTORE) // 구매 매장
+
+  productOrderId String // 상품 주문 아이디
+  productName String? // 상품 이름
+  productOption String? // 상품 옵션
+  quantity Int @default(1) // 주문 수량
+  status OrderStatus @default(PAYMENT_WAITING) // 주문 상태
+
+  orderId String // 주문 아이디 
+  ordererId String // 주문자 아이디
+  ordererName String // 주문자 이름
+
+  customer String // 설치 고객 이름
+  address String // 설치 주소
+  contact String // 설치 연락처
+  memo String? // 설치 메모
+
+  deliveryNumber String? // 배송 번호 (trackingNumber)
+  deliveryCompany String? // 배송 회사
+  deliveryMethod String? // 배송 방법
+  deliveryStatus String? // 배송 상태
+  deliveredDate DateTime? // 배송 완료 날짜
+
+  createdAt DateTime @default(now()) // 설치 생성 시간
+  updatedAt DateTime @updatedAt // 설치 업데이트 시간
+  deletedAt DateTime? // 설치 삭제 시간
+  lastChangedDate DateTime? // 주문 상태 변경 시간
+
+  product Product? @relation(references: [id], fields: [productId], onDelete: SetNull)
+  install Install?
+}
+
+enum OrderStatus {
+  PAYMENT_WAITING // 결제 대기
+  PAYED // 결제 완료	
+  DELIVERING // 배송 중	
+  DELIVERED // 배송 완료	
+  PURCHASE_DECIDED // 구매 확정	
+  EXCHANGED // 교환	
+  CANCELED // 취소	
+  RETURNED // 반품	
+  CANCELED_BY_NOPAYMENT // 미결제 취소
+}
+
+enum Shop {
+  SMARTSTORE // 스마트스토어
+  COOPANG // 쿠팡
+  ELEVEN // 11번가
+  LOCAL // 직접 구매
+}
+
+model Install {
+  id       String    @id @default(uuid())
+  engineerId String // 설치 엔지니어 아이디
+  orderId String? @unique // 주문 아이디
+  status InstallStatus @default(REQUESTED) // 설치 상태
+  type InstallType @default(INSTALL) // 설치 타입
+
+  extra1 String? // 설치 추가 정보
+  extra2 String? // 설치 추가 정보
+  extra3 String? // 설치 추가 정보
+
+  useStock Boolean @default(false) // 재고 사용 여부
+
+  createdAt DateTime @default(now()) // 설치 생성 시간
+  updatedAt DateTime @updatedAt // 설치 업데이트 시간
+  deletedAt DateTime? // 설치 삭제 시간
+
+  engineer Engineer @relation(references: [id], fields: [engineerId], onDelete: Cascade)
+  order Order? @relation(references: [id], fields: [orderId], onDelete: SetNull)
+}
+
+enum InstallType {
+  INSTALL // 설치
+  REPAIR // 수리
+  MAINTENANCE // 유지보수
+}
+
+enum InstallStatus {
+  REQUESTED // 요청됨
+  ACCEPTED // 엔지니어가 요청을 수락함
+  REJECTED // 엔지니어가 요청을 거절함
+  COMPLETED // 설치가 완료됨
+  CANCELED // 설치가 취소됨
+}
+
+model StockItem {
+  id          String    @id @default(uuid())
+  productId   String    // 상품 ID
+  engineerId  String    // 엔지니어 ID
+  quantity    Int       // 해당 창고에서의 상품 수량
+
+  product    Product @relation(references: [id], fields: [productId], onDelete: Cascade)
+  engineer   Engineer @relation(references: [id], fields: [engineerId], onDelete: Cascade)
+  inventoryMovements InventoryMovement[] // 재고 이동 기록
+}
+
+model InventoryMovement {
+  id          String    @id @default(uuid())
+  stockItemId String?   // 재고 항목 ID, 엔지니어 재고에만 해당될 경우 사용
+  productId   String?   // 상품 ID, 본사 재고에 대한 입출고 기록일 경우 사용
+  type        MovementType // 입고, 출고 타입
+  quantity    Int       // 수량
+  description String?  // 설명
+  date        DateTime  @default(now()) // 입출고 날짜
+
+  stockItem   StockItem? @relation(references: [id], fields: [stockItemId], onDelete: Cascade)
+  product     Product? @relation(references: [id], fields: [productId], onDelete: Cascade)
+}
+
+enum MovementType {
+  INBOUND  // 입고
+  OUTBOUND // 출고
+  RETURN // 반품
+}
+
+model SmartStore {
+  id       String   @id @default(uuid())
+  name String       // 스마트스토어 이름
+  url String        // 스마트스토어 URL
+  clientId String   // 스마트스토어 클라이언트 아이디
+  clientSecret String // 스마트스토어 시크릿
+  token String?      // 스마트스토어 토큰
+  expiresAt DateTime? // 스마트스토어 토큰 만료 시간  
+}
