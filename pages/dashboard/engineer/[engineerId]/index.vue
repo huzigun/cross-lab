@@ -60,43 +60,46 @@ async function onSubmit(event: FormSubmitEvent<CreateEngineerSchema>) {
 </script>
 
 <template>
-  <div class="p-4 md:p-8 pt-6">
-    <div class="grid grid-cols-2 gap-x-5">
-      <div class="col-span-2 lg:col-span-1">
-        <h4 class="font-semibold mb-4">설치기사 정보</h4>
-        <UForm
-          :schema="createEngineerSchema"
-          :state="state"
-          class="space-y-4"
-          @submit="onSubmit"
-        >
-          <UFormGroup label="이름" name="name" required>
-            <UInput v-model.trim="state.name" :loading="loading" />
-          </UFormGroup>
+  <div>
+    <AppPageHeader />
+    <UCard>
+      <div class="grid grid-cols-2 gap-x-5">
+        <div class="col-span-2 lg:col-span-1">
+          <h4 class="font-semibold mb-4">설치기사 정보</h4>
+          <UForm
+            :schema="createEngineerSchema"
+            :state="state"
+            class="space-y-4"
+            @submit="onSubmit"
+          >
+            <UFormGroup label="이름" name="name" required>
+              <UInput v-model.trim="state.name" :loading="loading" />
+            </UFormGroup>
 
-          <UFormGroup label="전화번호" name="number" required>
-            <UInput v-model.trim="state.number" :loading="loading" />
-          </UFormGroup>
+            <UFormGroup label="전화번호" name="number" required>
+              <UInput v-model.trim="state.number" :loading="loading" />
+            </UFormGroup>
 
-          <UFormGroup label="우편번호" name="zipCode" required>
-            <UInput v-model.trim="state.zipCode" :loading="loading" />
-          </UFormGroup>
+            <UFormGroup label="우편번호" name="zipCode" required>
+              <UInput v-model.trim="state.zipCode" :loading="loading" />
+            </UFormGroup>
 
-          <UFormGroup label="주소" name="address" required>
-            <UInput v-model.trim="state.address" :loading="loading" />
-          </UFormGroup>
+            <UFormGroup label="주소" name="address" required>
+              <UInput v-model.trim="state.address" :loading="loading" />
+            </UFormGroup>
 
-          <UFormGroup label="상세주소" name="addressDetail">
-            <UInput v-model.trim="state.addressDetail" :loading="loading" />
-          </UFormGroup>
+            <UFormGroup label="상세주소" name="addressDetail">
+              <UInput v-model.trim="state.addressDetail" :loading="loading" />
+            </UFormGroup>
 
-          <UButton type="submit" :loading="loading">Submit</UButton>
-        </UForm>
-      </div>
-      <div class="col-span-2 lg:col-span-1">
-        <!-- <h4 class="font-semibold mb-4">제품별 재고</h4>
+            <UButton type="submit" :loading="loading">Submit</UButton>
+          </UForm>
+        </div>
+        <div class="col-span-2 lg:col-span-1">
+          <!-- <h4 class="font-semibold mb-4">제품별 재고</h4>
         asdasd -->
+        </div>
       </div>
-    </div>
+    </UCard>
   </div>
 </template>

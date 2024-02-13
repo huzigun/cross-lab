@@ -59,65 +59,67 @@ async function onSubmit(event: FormSubmitEvent<CreateProductSchema>) {
 </script>
 
 <template>
-  <div class="p-4 md:p-8 pt-6">
-    <h1>Product: {{ $route.params.productId }}</h1>
-    <div class="max-w-[500px]">
-      <UForm
-        :schema="createProductSchema"
-        :state="state"
-        class="space-y-4"
-        @submit="onSubmit"
-      >
-        <UFormGroup label="상품명" name="name" required>
-          <UInput
-            v-model="state.name"
-            placeholder="상품명을 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+  <div>
+    <AppPageHeader />
+    <UCard>
+      <div class="max-w-[500px]">
+        <UForm
+          :schema="createProductSchema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
+        >
+          <UFormGroup label="상품명" name="name" required>
+            <UInput
+              v-model="state.name"
+              placeholder="상품명을 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UFormGroup label="재고" name="stock" required>
-          <UInput
-            v-model.number="state.stock"
-            placeholder="재고를 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+          <UFormGroup label="재고" name="stock" required>
+            <UInput
+              v-model.number="state.stock"
+              placeholder="재고를 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UFormGroup label="설명" name="description">
-          <UTextarea
-            v-model="state.description"
-            placeholder="간략한 설명을 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+          <UFormGroup label="설명" name="description">
+            <UTextarea
+              v-model="state.description"
+              placeholder="간략한 설명을 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UFormGroup label="스마트스토어 상품 ID" name="smartstoreProductId">
-          <UInput
-            v-model="state.smartstoreProductId"
-            placeholder="스마트스토어 상품아이디를 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+          <UFormGroup label="스마트스토어 상품 ID" name="smartstoreProductId">
+            <UInput
+              v-model="state.smartstoreProductId"
+              placeholder="스마트스토어 상품아이디를 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UFormGroup label="쿠팡 상품 ID" name="coopangProductId">
-          <UInput
-            v-model="state.coopangProductId"
-            placeholder="쿠팡 상품 아이디를 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+          <UFormGroup label="쿠팡 상품 ID" name="coopangProductId">
+            <UInput
+              v-model="state.coopangProductId"
+              placeholder="쿠팡 상품 아이디를 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UFormGroup label="11번가 상품 ID" name="elevenProductId">
-          <UInput
-            v-model="state.elevenProductId"
-            placeholder="11번가 상품 아이디를 입력해주세요."
-            :loading="loading"
-          />
-        </UFormGroup>
+          <UFormGroup label="11번가 상품 ID" name="elevenProductId">
+            <UInput
+              v-model="state.elevenProductId"
+              placeholder="11번가 상품 아이디를 입력해주세요."
+              :loading="loading"
+            />
+          </UFormGroup>
 
-        <UButton type="submit" :loading="loading">Submit</UButton>
-      </UForm>
-    </div>
+          <UButton type="submit" :loading="loading">Submit</UButton>
+        </UForm>
+      </div>
+    </UCard>
   </div>
 </template>

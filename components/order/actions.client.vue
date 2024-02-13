@@ -65,6 +65,8 @@ const onSubmit = async () => {
       body: data,
     });
     toast.add({
+      icon: 'i-heroicons-check-badge',
+      color: 'primary',
       title: '요청이 완료되었습니다.',
     });
     isOpenInstall.value = false;
@@ -72,6 +74,8 @@ const onSubmit = async () => {
     console.dir(error);
     toast.add({
       title: '요청에 실패했습니다.',
+      icon: 'i-heroicons-x-circle',
+      color: 'red',
     });
   } finally {
     loading.value = false;

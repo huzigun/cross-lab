@@ -12,13 +12,18 @@ export default defineNuxtConfig({
         },
       ],
     },
+    pageTransition: { name: 'page', mode: 'out-in' },
   },
 
-  modules: ['@nuxt/ui', 'dayjs-nuxt'],
+  modules: ['@nuxt/ui', 'dayjs-nuxt', '@pinia/nuxt'],
 
   build: {
     transpile: ['jsonwebtoken'],
   },
+
+  ssr: false,
+
+  css: ['~/assets/scss/app.scss'],
 
   ui: {
     /**
@@ -45,5 +50,9 @@ export default defineNuxtConfig({
     plugins: ['relativeTime', 'utc', 'timezone'],
     defaultLocale: 'ko',
     defaultTimezone: 'Asia/Seoul',
+  },
+
+  pinia: {
+    storesDirs: ['./stores/**'],
   },
 });

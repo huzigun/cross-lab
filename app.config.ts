@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     strategy: 'override', // 기존 설정을 유지하면서 설정변경 및 추가
-    primary: 'tahiti',
+    primary: 'indigo',
     button: {
       rounded: 'rounded',
       default: {
@@ -40,18 +40,18 @@ export default defineAppConfig({
       },
     },
     table: {
-      base: 'border border-gray-100 dark:border-gray-700 min-w-full table-fixed',
-      divide: 'divide-y divide-gray-100 dark:divide-gray-700',
-      thead: 'divide-y divide-gray-100 dark:divide-gray-700',
-      tbody: 'divide-y divide-gray-100 dark:divide-gray-700',
+      // base: 'border border-gray-100 dark:border-gray-700 min-w-full table-fixed',
+      // divide: 'divide-y divide-gray-100 dark:divide-gray-700',
+      // thead: 'divide-y divide-gray-100 dark:divide-gray-700',
+      // tbody: 'divide-y divide-gray-100 dark:divide-gray-700',
       th: {
-        base: 'text-left rtl:text-right border-r border-gray-100 dark:border-gray-700',
+        base: 'text-left rtl:text-right min-w-20',
         size: 'text-[0.85rem]',
         font: 'font-semibold',
         padding: 'py-3 px-3',
       },
       td: {
-        base: 'whitespace-nowrap border-r border-gray-100 dark:border-gray-700',
+        base: 'whitespace-nowrap min-w-20',
         size: 'text-[0.813rem]',
         padding: 'py-3 px-3',
       },

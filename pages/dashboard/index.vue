@@ -3,5 +3,8 @@
 </script>
 
 <template>
-  <div>Dashboard</div>
+  <div>
+    <AppPageHeader />
+    <UCard>asdsa</UCard>
+  </div>
 </template>
