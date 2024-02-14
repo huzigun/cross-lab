@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-definePageMeta({
-  middlewear: ['protected'],
-});
+definePageMeta({});
 
 const { data, pending, error } = await useFetch<any[]>('/api/user/search', {
   lazy: true,
@@ -39,43 +37,40 @@ const columns = [
     label: 'Actions',
   },
 ];
-const user = useUser();
+
 const selected = ref<any[]>([]);
 </script>
 
 <template>
   <div>
-    <AppPageHeader />
-    <UCard>
-      <div class="flex items-center space-x-4" v-if="pending">
-        <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
-        <div class="space-y-2">
-          <USkeleton class="h-4 w-[250px]" />
-          <USkeleton class="h-4 w-[200px]" />
-        </div>
+    <div class="flex items-center space-x-4" v-if="pending">
+      <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
+      <div class="space-y-2">
+        <USkeleton class="h-4 w-[250px]" />
+        <USkeleton class="h-4 w-[200px]" />
       </div>
-      <div v-else>
-        <div class="py-4 flex justify-end">
-          <UButton :trailing="false" icon="i-heroicons-plus-20-solid">
-            Add New
-          </UButton>
-        </div>
-        <UTable v-model="selected" :rows="data" :columns="columns">
-          <template #createdAt-data="{ row }">
-            <div>
-              {{ $dayjs(row.createdAt).format('YYYY-MM-DD') }}
-            </div>
-          </template>
-          <template #actions-data="{ row }">
-            <!-- <UDropdown :items="items(row)">
+    </div>
+    <div v-else>
+      <div class="py-4 flex justify-end">
+        <UButton :trailing="false" icon="i-heroicons-plus-20-solid">
+          Add New
+        </UButton>
+      </div>
+      <UTable v-model="selected" :rows="data" :columns="columns">
+        <template #createdAt-data="{ row }">
+          <div>
+            {{ $dayjs(row.createdAt).format('YYYY-MM-DD') }}
+          </div>
+        </template>
+        <template #actions-data="{ row }">
+          <!-- <UDropdown :items="items(row)">
             <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
           </UDropdown> -->
-            <div>
-              {{ row.id }}
-            </div>
-          </template>
-        </UTable>
-      </div>
-    </UCard>
+          <div>
+            {{ row.id }}
+          </div>
+        </template>
+      </UTable>
+    </div>
   </div>
 </template>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const user = useSupabaseUser();
+const supabase = useSupabaseClient();
 const items = [
   [
     {
@@ -29,9 +31,7 @@ const items = [
       icon: 'i-heroicons-arrow-left-start-on-rectangle-solid',
       click: async () => {
         try {
-          await $fetch('/api/auth/logout', {
-            method: 'POST',
-          });
+          await supabase.auth.signOut();
           await navigateTo('/sign-in');
         } catch (error) {
           console.error(error);
@@ -40,19 +40,18 @@ const items = [
     },
   ],
 ];
-const user = useUser();
 </script>
 
 <template>
   <UDropdown :items="items" :popper="{ placement: 'bottom-start' }" v-if="user">
     <div class="flex items-center gap-x-3 min-w-32">
-      <UAvatar src="" :alt="user.nickname" />
+      <UAvatar src="" :alt="user.user_metadata?.nickname || user.email" />
       <dl class="w-full">
         <dt class="font-semibold text-sm">
-          {{ user.nickname }}
+          {{ user.user_metadata?.nickname || user.email }}
         </dt>
         <dd class="text-xs text-dark/60">
-          {{ user.username }}
+          {{ user.email }}
         </dd>
       </dl>
     </div>

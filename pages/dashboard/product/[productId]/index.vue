@@ -6,7 +6,6 @@ import {
 } from '~/schema/product';
 
 definePageMeta({
-  middleware: ['protected'],
   validate(route) {
     // new 이거나 15자인 경우만 허용
     return (
@@ -60,7 +59,6 @@ async function onSubmit(event: FormSubmitEvent<CreateProductSchema>) {
 
 <template>
   <div>
-    <AppPageHeader />
     <UCard>
       <div class="max-w-[500px]">
         <UForm

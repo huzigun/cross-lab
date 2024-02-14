@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 const props = defineProps<{
   items: IMenu[];
+  sidebarWidth: number;
+  sidebarCollapsed: boolean;
 }>();
 
 const route = useRoute();
@@ -21,17 +23,17 @@ const isCurrentPath = (path?: string) => {
     :ui="{ wrapper: 'flex flex-col gap-y-1' }"
   >
     <template #default="{ item, index, open }">
-      <div class="px-3" :style="{ width: uiStore.SIDE_BAR_WIDTH + 'px' }">
+      <div class="px-3" :style="{ width: sidebarWidth + 'px' }">
         <button
           type="button"
           class="rounded-lg flex leading-snug text-white/50 text-[0.85rem] p-3 hover:bg-white/5 w-full text-left items-center font-semibold relative gap-x-3"
           :class="{
             'menu-active': isCurrentPath(item.to),
-            'justify-center': uiStore.IS_SIDEBAR_COLLAPSED,
+            'justify-center': sidebarCollapsed,
           }"
         >
           <UIcon :name="item.icon" v-if="item.icon" class="w-4 h-4" />
-          <template v-if="!uiStore.IS_SIDEBAR_COLLAPSED">
+          <template v-if="!sidebarCollapsed">
             <span>{{ item.label }}</span>
             <UIcon
               name="i-heroicons-chevron-right-solid "
@@ -43,11 +45,11 @@ const isCurrentPath = (path?: string) => {
       </div>
     </template>
 
-    <template #sub-menus="{ item }" v-if="!uiStore.IS_SIDEBAR_COLLAPSED">
+    <template #sub-menus="{ item }" v-if="!sidebarCollapsed">
       <ul
         v-if="!!item.submenus"
         class="sub-menu px-3"
-        :style="{ width: uiStore.SIDE_BAR_WIDTH + 'px' }"
+        :style="{ width: sidebarWidth + 'px' }"
       >
         <li
           v-for="(subItem, subIndex) in item.submenus"

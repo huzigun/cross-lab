@@ -24,8 +24,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  await delay(1000);
-
   const newProduct = await createProduct(body);
 
   return {

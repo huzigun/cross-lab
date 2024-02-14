@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-const SIDEBAR_FULL_WIDTH = 240;
-const SIDEBAR_COLLAPSED_WIDTH = 80;
+export const SIDEBAR_FULL_WIDTH = 240;
+export const SIDEBAR_COLLAPSED_WIDTH = 68;
 
 interface IUiState {
   sideBarWidth: number;

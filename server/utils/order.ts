@@ -1,5 +1,5 @@
-import { Prisma, Order } from '@prisma/client';
-import { generateId } from 'lucia';
+import type { Prisma, Order } from '@prisma/client';
+import { nanoid } from 'nanoid/non-secure';
 import bcrypt from 'bcrypt';
 import dayjs from 'dayjs';
 
@@ -83,7 +83,7 @@ export const upsertOrder = async (
     return await client.order.create({
       data: {
         ...data,
-        id: generateId(20),
+        id: nanoid(),
         product: {
           connect: {
             id: productId,
@@ -116,7 +116,7 @@ export async function installOrder(
   },
 ) {
   await client.$transaction(async (prismaInstance) => {
-    const installId = generateId(20);
+    const installId = nanoid();
     // 설치 주문 생성
     await prismaInstance.install.create({
       data: {
@@ -134,6 +134,7 @@ export async function installOrder(
           stock: { decrement: 1 },
           inventoryMovements: {
             create: {
+              id: nanoid(),
               type: 'OUTBOUND',
               quantity: 1,
               description: `(${installId}) 설치 출고`,
@@ -151,7 +152,7 @@ export async function installOrder(
           },
         },
         create: {
-          id: generateId(20),
+          id: nanoid(),
           quantity: 1,
           product: { connect: { id: connect.productId } },
           engineer: { connect: { id: connect.engineerId } },

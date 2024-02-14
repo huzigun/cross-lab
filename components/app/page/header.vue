@@ -22,6 +22,11 @@ const navs = titles.map((t) => {
     <h2 class="text-dark dark:text-white/70 text-lg font-semibold">
       {{ currentTitle }}
     </h2>
-    <UBreadcrumb :links="navs" />
+    <UBreadcrumb
+      :links="navs"
+      :ui="{
+        li: 'flex items-center gap-x-1.5 text-gray-500 dark:text-gray-400 text-[13px] leading-6 min-w-0',
+      }"
+    />
   </div>
 </template>

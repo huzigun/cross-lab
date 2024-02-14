@@ -1,13 +1,90 @@
 <script lang="ts" setup>
+const links = [
+  {
+    label: '대시보드',
+    to: '/dashboard',
+  },
+  {
+    label: '내 작업',
+    to: '/dashboard/engineer',
+  },
+  {
+    label: '프로젝트',
+    to: '/dashboard/order',
+  },
+  {
+    label: '필터',
+    to: '/dashboard/product',
+  },
+];
+
 const uiStore = useUiStore();
+const user = useSupabaseUser();
 </script>
 
 <template>
   <div
-    class="app_layout flex flex-col h-full min-h-screen"
-    :style="{ '--side-bar-width': uiStore.SIDE_BAR_WIDTH + 'px' }"
+    class="h-screen bg-white overflow-x-hidden relative overflow-y-auto flex flex-col transition-all duration-150"
+    :style="{
+      '--side-bar-width': uiStore.SIDE_BAR_WIDTH + 'px',
+      paddingLeft: 'var(--side-bar-width)',
+    }"
   >
-    <header
+    <div class="inset-x-0 top-0 bg-white sticky z-50">
+      <header class="px-3 h-14 border-b flex items-center">
+        <div class="flex-1">
+          <UButton
+            icon="i-ion-apps-sharp"
+            size="lg"
+            color="gray"
+            square
+            variant="ghost"
+            :ui="{ rounded: 'rounded-full' }"
+            @click="uiStore.toggleSideBarWidth"
+          />
+        </div>
+        <div class="">
+          <ClientOnly>
+            <template #fallback>
+              <USkeleton class="w-8 h-8 rounded-full" />
+            </template>
+            <UPopover :popper="{ placement: 'bottom-start' }" v-if="user">
+              <UAvatar src="" :alt="user.user_metadata.nickname || 'C L'" />
+
+              <template #panel>
+                <div class="py-1.5 w-64 text-sm leading-8">
+                  <div class="flex items-center gap-x-2 w-full">
+                    <UAvatar
+                      src=""
+                      :alt="user.user_metadata.nickname || 'C L'"
+                    />
+                    <div>
+                      <div class="text-white font-semibold text-sm">
+                        {{ user.user_metadata.nickname }}
+                      </div>
+                      <div class="text-white/60 text-xs">
+                        {{ user.email }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="px-4 cursor-pointer hover:bg-gray-50">
+                    Setting
+                  </div>
+                  <div class="px-4 cursor-pointer hover:bg-gray-50">
+                    Sign out
+                  </div>
+                </div>
+              </template>
+            </UPopover>
+          </ClientOnly>
+        </div>
+      </header>
+    </div>
+
+    <AppSidebar />
+
+    <!-- <header
       class="app_header fixed inset-x-0 w-full max-w-full app_bg app_border_b z-40 app_transition"
       :style="{
         paddingInlineStart: 'var(--side-bar-width)',
@@ -33,9 +110,9 @@ const uiStore = useUiStore();
           <AppUserNav />
         </div>
       </div>
-    </header>
+    </header> -->
 
-    <aside
+    <!-- <aside
       class="app_sidebar fixed left-0 inset-y-0 z-50 app_border_r app_transition"
       :style="{
         width: 'var(--side-bar-width)',
@@ -59,37 +136,18 @@ const uiStore = useUiStore();
       >
         <AppSidebar />
       </div>
-    </aside>
+    </aside> -->
 
-    <div
-      class="app_content app_transition"
-      :style="{
-        marginTop: 'var(--header-height)',
-        marginLeft: 'var(--side-bar-width)',
-      }"
-    >
-      <main class="px-6 pb-6">
-        <slot />
-      </main>
-    </div>
+    <main class="flex-1 overflow-y-auto px-6 pb-6">
+      <AppPageHeader />
+      <slot />
+      <div :style="{ height: '20000px' }"></div>
+    </main>
 
     <footer
-      class="app_bg app_footer app_transition mt-auto xl:ps-[15rem] font-normal font-inter bg-white text-defaultsize leading-normal text-[0.813] shadow-[0_0_0.4rem_rgba(0,0,0,0.1)] py-4 text-center"
-    ></footer>
+      class="h-9 border-t flex items-center justify-center text-xs bg-white"
+    >
+      <span class="opacity-40">Developed by Huzigun</span>
+    </footer>
   </div>
 </template>
-
-<style lang="scss">
-.app_bg {
-  @apply bg-white dark:bg-body-dark;
-}
-.app_border_b {
-  @apply border-b dark:border-white/10;
-}
-.app_border_r {
-  @apply border-r dark:border-white/10;
-}
-.app_transition {
-  @apply transition-all duration-150;
-}
-</style>

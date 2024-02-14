@@ -1,5 +1,5 @@
 import { Prisma, MovementType } from '@prisma/client';
-import { generateId } from 'lucia';
+import { nanoid } from 'nanoid/non-secure';
 
 /**
  * 상품 생성
@@ -13,7 +13,7 @@ export const createProduct = async (data: Prisma.ProductCreateInput) => {
     data.stock && data.stock > 0
       ? {
           create: {
-            id: generateId(20),
+            id: nanoid(),
             type: MovementType.INBOUND,
             quantity: data.stock ?? 0,
           },
@@ -23,7 +23,7 @@ export const createProduct = async (data: Prisma.ProductCreateInput) => {
   return await client.product.create({
     data: {
       ...data,
-      id: generateId(15),
+      id: nanoid(),
       inventoryMovements: stockMovement,
     },
   });

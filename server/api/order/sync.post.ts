@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 
 export default defineEventHandler(async (event) => {
-  if (!event.context.user) {
-    throw createError({
-      status: 401,
-      message: 'Unauthorized',
-      statusMessage: 'Unauthorized',
-    });
-  }
+  // if (!event.context.user) {
+  //   throw createError({
+  //     status: 401,
+  //     message: 'Unauthorized',
+  //     statusMessage: 'Unauthorized',
+  //   });
+  // }
 
   const accessToken = await getSmartStoreToken();
 
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   let to = now.subtract(5, 'second'); // 5초 전
   let from = now.subtract(5, 'second').subtract(1, 'day'); // 1일 전
 
-  for (let i = 0; i < 31; i++) {
+  for (let i = 0; i < 3; i++) {
     const result = await $fetch<any>(
       `https://api.commerce.naver.com/external/v1/pay-order/seller/product-orders/last-changed-statuses`,
       {

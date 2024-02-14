@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
       },
     ];
   }
-  await delay(1000);
+
   const totalCount = await countOrder({ where });
   const { skip, take } = generateSkip(data.page, data.limit);
   const orders = await findManyOrder({

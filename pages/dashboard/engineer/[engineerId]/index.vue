@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from '#ui/types';
+import type { Engineer, StockItem, Product } from '@prisma/client';
+
 import {
   createEngineerSchema,
   type CreateEngineerSchema,
 } from '~/schema/engineer';
 
 definePageMeta({
-  middlewear: ['prodected'],
   validate(route) {
     // new 이거나 15자인 경우만 허용
     return (
@@ -17,6 +18,11 @@ definePageMeta({
 
 const toast = useToast();
 const route = useRoute();
+
+const { data, pending, error } = await useFetch<{
+  engineer: Engineer;
+  stockItems: (StockItem & { product: Product })[];
+}>(`/api/engineer/${route.params.engineerId}`);
 
 const loading = ref(false);
 const state = ref({
@@ -61,7 +67,6 @@ async function onSubmit(event: FormSubmitEvent<CreateEngineerSchema>) {
 
 <template>
   <div>
-    <AppPageHeader />
     <UCard>
       <div class="grid grid-cols-2 gap-x-5">
         <div class="col-span-2 lg:col-span-1">

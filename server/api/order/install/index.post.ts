@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     });
   }
   const data = installOrderSchema.parse(body);
-  await delay(1000);
+
   await installOrder(
     {
       type: data.installType,

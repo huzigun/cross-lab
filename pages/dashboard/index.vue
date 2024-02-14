@@ -3,8 +3,5 @@
 </script>
 
 <template>
-  <div>
-    <AppPageHeader />
-    <UCard>asdsa</UCard>
-  </div>
+  <div>..</div>
 </template>

@@ -7,15 +7,19 @@ export default defineEventHandler(async (evnet) => {
     });
   }
 
-  const engineers = await findManyEngineer({
+  const engineers = await client.engineer.findMany({
     orderBy: {
       createdAt: 'desc',
     },
     select: {
       id: true,
       name: true,
+      number: true,
     },
   });
 
-  return engineers;
+  return engineers.map((engineer) => ({
+    id: engineer.id,
+    name: `${engineer.name} (${engineer.number})`,
+  }));
 });

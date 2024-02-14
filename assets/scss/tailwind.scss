@@ -74,6 +74,6 @@
   }
   body {
     // @apply bg-background text-foreground h-full;
-    @apply h-full;
+    @apply h-full overflow-y-auto;
   }
 }

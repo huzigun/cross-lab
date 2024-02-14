@@ -15,15 +15,25 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
   },
 
-  modules: ['@nuxt/ui', 'dayjs-nuxt', '@pinia/nuxt'],
+  modules: ['@nuxt/ui', 'dayjs-nuxt', '@pinia/nuxt', '@nuxtjs/supabase', "@nuxt/image"],
 
-  build: {
-    transpile: ['jsonwebtoken'],
-  },
+  // build: {
+  //   transpile: ['jsonwebtoken'],
+  // },
 
-  ssr: false,
+  // ssr: false,
 
   css: ['~/assets/scss/app.scss'],
+
+  supabase: {
+    // redirect: false,
+    redirectOptions: {
+      login: '/sign-in',
+      callback: '/',
+      // exclude: [], // 제외할 페이지 경로
+      // cookieRedirect: false, // 쿠키 리다이렉트 사용 여부
+    },
+  },
 
   ui: {
     /**

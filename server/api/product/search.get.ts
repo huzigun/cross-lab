@@ -7,8 +7,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  await delay(1000);
-
   const products = await findManyProduct({});
   return products;
 });

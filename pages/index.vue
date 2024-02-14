@@ -1,23 +1,33 @@
 <script lang="ts" setup>
 definePageMeta({});
+
+const test = async () => {
+  console.log('test');
+  try {
+    const result = await $fetch('/api/test');
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const supabase = useSupabaseClient();
+const test2 = async () => {
+  try {
+    // const result = await supabase.auth.updateUser({
+    //   data: {
+    //     nickname: '휴쥐군2',
+    //   },
+    // });
+    // console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <template>
   <div>
-    <nuxt-link to="/">-> manual login, logout, refresh button</nuxt-link>
-    <br />
-    <nuxt-link to="/protected/globally">-> globally protected page</nuxt-link>
-    <br />
-    <nuxt-link to="/protected/locally">
-      -> locally protected page (only works if global middleware disabled)
-    </nuxt-link>
-    <br />
-    <nuxt-link to="/always-unprotected">
-      -> page that is always unprotected
-    </nuxt-link>
-    <br />
-    <nuxt-link to="/guest">-> guest mode</nuxt-link>
-    <br />
-    <div>select one of the above actions to get started.</div>
+    <UButton @click="test2">테스트</UButton>
   </div>
 </template>

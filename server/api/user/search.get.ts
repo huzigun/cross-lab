@@ -7,8 +7,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  await delay(1000);
-
   const users = await getUsers({
     orderBy: {
       createdAt: 'desc',

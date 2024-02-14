@@ -6,27 +6,46 @@ definePageMeta({
   layout: 'blank',
 });
 
+const supabase = useSupabaseClient();
 const toast = useToast();
 const loading = ref(false);
+
 const state = ref({
-  username: undefined,
-  password: undefined,
+  email: '',
+  password: '',
 });
 
 async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
   // Do something with data
-  console.log(event.data);
+
   loading.value = true;
   try {
-    const result = await $fetch<{ message: string }>('/api/auth/login', {
-      method: 'POST',
-      body: event.data,
+    // const result = await supabase.auth.signInWithPassword({
+    //   email: event.data.email,
+    //   password: event.data.password,
+    // });
+
+    const result = await supabase.auth.signUp({
+      email: event.data.email,
+      password: event.data.password,
+      options: {
+        data: {
+          nickname: '휴쥐군',
+        },
+      },
     });
+
+    console.log(result);
+
+    if (!result.data?.user) {
+      throw new Error('로그인에 실패했습니다.');
+    }
+
     toast.add({
       title: '로그인 성공',
       icon: 'i-heroicons-check-badge',
       color: 'primary',
-      description: result.message,
+      description: '로그인에 성공했습니다.',
     });
     navigateTo('/dashboard');
   } catch (error: any) {
@@ -34,7 +53,7 @@ async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
       title: '로그인 실패',
       icon: 'i-heroicons-x-circle',
       color: 'red',
-      description: error.data?.message ?? error.message,
+      description: error.message,
     });
   } finally {
     loading.value = false;
@@ -97,11 +116,11 @@ async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
             :state="state"
             @submit="onSubmit"
           >
-            <UFormGroup label="Username" name="username">
+            <UFormGroup label="Email" name="email">
               <UInput
                 :loading="loading"
-                v-model.trim="state.username"
-                placeholder="Enter your username"
+                v-model.trim="state.email"
+                placeholder="Enter your email."
               />
             </UFormGroup>
 
@@ -110,7 +129,7 @@ async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
                 :loading="loading"
                 v-model.trim="state.password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Enter your password."
                 autocomplete="off"
               />
             </UFormGroup>
