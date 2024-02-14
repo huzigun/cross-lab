@@ -1,23 +1,4 @@
 <script lang="ts" setup>
-const links = [
-  {
-    label: '대시보드',
-    to: '/dashboard',
-  },
-  {
-    label: '내 작업',
-    to: '/dashboard/engineer',
-  },
-  {
-    label: '프로젝트',
-    to: '/dashboard/order',
-  },
-  {
-    label: '필터',
-    to: '/dashboard/product',
-  },
-];
-
 const uiStore = useUiStore();
 const user = useSupabaseUser();
 </script>
@@ -48,30 +29,19 @@ const user = useSupabaseUser();
             <template #fallback>
               <USkeleton class="w-8 h-8 rounded-full" />
             </template>
-            <UPopover :popper="{ placement: 'bottom-start' }" v-if="user">
+            <UPopover
+              :popper="{ placement: 'bottom-start' }"
+              :ui="{ ring: '' }"
+              v-if="user"
+            >
               <UAvatar src="" :alt="user.user_metadata.nickname || 'C L'" />
 
               <template #panel>
-                <div class="py-1.5 w-64 text-sm leading-8">
-                  <div class="flex items-center gap-x-2 w-full">
-                    <UAvatar
-                      src=""
-                      :alt="user.user_metadata.nickname || 'C L'"
-                    />
-                    <div>
-                      <div class="text-white font-semibold text-sm">
-                        {{ user.user_metadata.nickname }}
-                      </div>
-                      <div class="text-white/60 text-xs">
-                        {{ user.email }}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="px-4 cursor-pointer hover:bg-gray-50">
+                <div class="py-2 w-40 text-[13px] leading-8">
+                  <div class="px-6 cursor-pointer hover:bg-gray-50">
                     Setting
                   </div>
-                  <div class="px-4 cursor-pointer hover:bg-gray-50">
+                  <div class="px-6 cursor-pointer hover:bg-gray-50">
                     Sign out
                   </div>
                 </div>
@@ -138,7 +108,7 @@ const user = useSupabaseUser();
       </div>
     </aside> -->
 
-    <main class="flex-1 overflow-y-auto px-6 pb-6">
+    <main class="flex-1 overflow-y-auto px-6 pb-6 bg-[#F0F1F7]">
       <AppPageHeader />
       <slot />
       <div :style="{ height: '20000px' }"></div>

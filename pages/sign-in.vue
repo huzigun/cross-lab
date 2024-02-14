@@ -35,8 +35,6 @@ async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
       },
     });
 
-    console.log(result);
-
     if (!result.data?.user) {
       throw new Error('로그인에 실패했습니다.');
     }
@@ -47,7 +45,7 @@ async function onSubmit(event: FormSubmitEvent<signInSchemaType>) {
       color: 'primary',
       description: '로그인에 성공했습니다.',
     });
-    navigateTo('/dashboard');
+    navigateTo('/');
   } catch (error: any) {
     toast.add({
       title: '로그인 실패',

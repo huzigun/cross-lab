@@ -50,12 +50,12 @@ const selected = ref<any[]>([]);
         <USkeleton class="h-4 w-[200px]" />
       </div>
     </div>
-    <div v-else>
-      <div class="py-4 flex justify-end">
+    <UCard v-else>
+      <template #header>
         <UButton :trailing="false" icon="i-heroicons-plus-20-solid">
           Add New
         </UButton>
-      </div>
+      </template>
       <UTable v-model="selected" :rows="data" :columns="columns">
         <template #createdAt-data="{ row }">
           <div>
@@ -71,6 +71,6 @@ const selected = ref<any[]>([]);
           </div>
         </template>
       </UTable>
-    </div>
+    </UCard>
   </div>
 </template>

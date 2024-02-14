@@ -52,7 +52,7 @@ const colums = computed(() => {
     </div>
     <div v-else>
       <div class="mb-4">
-        <UButton to="/dashboard/engineer/new" icon="i-heroicons-plus-20-solid">
+        <UButton to="/engineer/new" icon="i-heroicons-plus-20-solid">
           기사 추가
         </UButton>
       </div>
@@ -65,7 +65,7 @@ const colums = computed(() => {
         </template>
         <template #actions-data="{ row }">
           <UButton
-            :to="`/dashboard/engineer/${row.id}`"
+            :to="`/engineer/${row.id}`"
             icon="i-heroicons-pencil-20-solid"
             size="xs"
             color="gray"

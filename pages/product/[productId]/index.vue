@@ -43,7 +43,7 @@ async function onSubmit(event: FormSubmitEvent<CreateProductSchema>) {
       color: 'primary',
       description: result.message,
     });
-    navigateTo('/dashboard/product');
+    navigateTo('/product');
   } catch (error: any) {
     toast.add({
       title: '등록 실패',

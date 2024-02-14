@@ -1,31 +1,31 @@
 export const useMenus = (): IMenu[] => {
   return [
     {
-      label: 'STORE 관리',
+      label: 'STORE',
       defaultOpen: true,
       slot: 'sub-menus',
-      to: '/dashboard',
+      to: '',
       icon: 'i-heroicons-home-20-solid',
       submenus: [
         {
           label: '대시보드',
-          to: '/dashboard',
+          to: '/',
         },
         {
           label: '설치기사 관리',
-          to: '/dashboard/engineer',
+          to: '/engineer',
         },
         {
           label: '상품 관리',
-          to: '/dashboard/product',
+          to: '/product',
         },
         {
           label: '주문 관리',
-          to: '/dashboard/order',
+          to: '/order',
         },
         {
           label: '유저 관리',
-          to: '/dashboard/user',
+          to: '/user',
         },
       ],
     },
@@ -41,7 +41,7 @@ export const useMenus = (): IMenu[] => {
 export const usePageTitles = (path: string, menus: IMenu[]) => {
   const pageTitles: IMenu[] = [
     {
-      label: 'Home',
+      label: 'HOME',
       to: '/',
     },
   ];

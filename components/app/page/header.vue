@@ -10,9 +10,7 @@ const currentTitle = computed(() => {
 
 const navs = titles.map((t) => {
   return {
-    label: t.label,
-    // to: t.to,
-    // icon: 'i-heroicons-link',
+    label: t.label.toUpperCase(),
   };
 });
 </script>
@@ -25,7 +23,7 @@ const navs = titles.map((t) => {
     <UBreadcrumb
       :links="navs"
       :ui="{
-        li: 'flex items-center gap-x-1.5 text-gray-500 dark:text-gray-400 text-[13px] leading-6 min-w-0',
+        li: 'flex items-center gap-x-1.5 text-gray-500 dark:text-gray-400 text-xs leading-6 min-w-0',
       }"
     />
   </div>

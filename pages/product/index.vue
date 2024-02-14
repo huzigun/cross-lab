@@ -19,7 +19,7 @@ const { data, pending, error } = useFetch<any[]>('/api/product/search', {
       </div>
     </div>
     <div v-else>
-      <UButton to="/dashboard/product/new" icon="i-heroicons-plus-20-solid">
+      <UButton to="/product/new" icon="i-heroicons-plus-20-solid">
         Add New
       </UButton>
     </div>

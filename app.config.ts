@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     strategy: 'override', // 기존 설정을 유지하면서 설정변경 및 추가
-    primary: 'indigo',
+    primary: 'violet',
     button: {
       rounded: 'rounded',
       default: {
@@ -9,13 +9,14 @@ export default defineAppConfig({
       },
     },
     card: {
-      ring: '',
-      background: 'app_bg',
       divide: 'divide-y divide-gray-100 dark:divide-gray-700',
       shadow: 'shadow_faint',
       header: {
         base: 'font-medium',
         padding: 'px-4 py-4 sm:px-6',
+      },
+      body: {
+        padding: '',
       },
     },
     input: {

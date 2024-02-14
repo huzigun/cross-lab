@@ -51,7 +51,7 @@ async function onSubmit(event: FormSubmitEvent<CreateEngineerSchema>) {
       color: 'primary',
       description: result.message,
     });
-    navigateTo('/dashboard/engineer');
+    navigateTo('/engineer');
   } catch (error: any) {
     toast.add({
       title: '등록 실패',
